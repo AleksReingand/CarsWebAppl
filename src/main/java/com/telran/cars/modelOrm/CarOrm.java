@@ -26,8 +26,9 @@ public class CarOrm implements ICar {
 		if (em.find(Car.class, car.getRegNumber()) != null) {
 			return CarReturnCode.CAR_EXISTS;
 		}
+		Model model = car.getModel();
 		if (em.find(Model.class, car.getModel()) == null) {
-			em.persist(car.getModel());
+			em.persist(model);
 		}
 		List<Owner> owners = car.getOwners();
 		for (Owner owner : owners) {
