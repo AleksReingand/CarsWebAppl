@@ -18,6 +18,7 @@ public class Car implements Serializable {
 	@Id
 	String regNumber;
 	String name;
+	String color;
 	LocalDate yearRelease;
 	State state;
 	@ManyToMany
@@ -27,6 +28,14 @@ public class Car implements Serializable {
 
 	public Car() {
 		super();
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 	public static long getSerialversionuid() {
@@ -59,8 +68,8 @@ public class Car implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Car [regNumber=" + regNumber + ", name=" + name + ", yearRelease=" + yearRelease + ", state=" + state
-				+ ", model=" + model + "]";
+		return "Car [regNumber=" + regNumber + ", name=" + name + ", color=" + color + ", yearRelease=" + yearRelease
+				+ ", state=" + state + ", model=" + model + "]";
 	}
 
 }

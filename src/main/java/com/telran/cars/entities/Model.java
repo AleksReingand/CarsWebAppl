@@ -17,7 +17,7 @@ public class Model implements Serializable {
 	String nameModel;
 	String country;
 	LocalDate yearCreate;
-	@OneToMany(mappedBy = "model")
+	@OneToMany(mappedBy = "model", cascade = CascadeType.REMOVE)
 	List<Car> cars;
 
 	public Model() {

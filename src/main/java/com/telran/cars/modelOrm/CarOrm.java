@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +17,7 @@ import com.telran.cars.interfaces.ICar;
 
 @Repository
 public class CarOrm implements ICar {
-
+	@PersistenceContext
 	EntityManager em;
 
 	@Override
@@ -31,6 +32,7 @@ public class CarOrm implements ICar {
 
 		// XXX
 		if (em.find(Owner.class, car.getOwners()) == null) {
+
 			em.persist(Collections.emptyList());
 		}
 
@@ -64,6 +66,9 @@ public class CarOrm implements ICar {
 	@Transactional
 	public CarReturnCode removeCar(String regNumber) {
 		Car car = em.find(Car.class, regNumber);
+		if (car == null) {
+			return CarReturnCode.NO_CAR;
+		}
 		em.remove(car);
 		return CarReturnCode.OK;
 	}
@@ -71,22 +76,37 @@ public class CarOrm implements ICar {
 	@Override
 	@Transactional
 	public CarReturnCode removeModel(String nameModel) {
-		// TODO Auto-generated method stub
-		return null;
+		Model model = em.find(Model.class, nameModel);
+		if (model == null) {
+			return CarReturnCode.NO_MODEL;
+		}
+		em.remove(model);
+		return CarReturnCode.OK;
 	}
 
 	@Override
 	@Transactional
 	public CarReturnCode removeOwner(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Owner owner = em.find(Owner.class, id);
+		if (owner == null) {
+			return CarReturnCode.NO_OWNER;
+		}
+		List<Car> cars = owner.getCars();
+		for (Car car : cars) {
+			car.getOwners().remove(owner);
+		}
+		em.remove(owner);
+		return CarReturnCode.OK;
 	}
 
 	@Override
 	@Transactional
 	public CarReturnCode updateCarOwner(String regNumber, long newId) {
-		// TODO Auto-generated method stub
-		return null;
+		Car car = em.find(Car.class, regNumber);
+		Owner owner = em.find(Owner.class, newId);
+		List<Owner> owners = car.getOwners();
+		owners.add(owner);
+		return CarReturnCode.OK;
 	}
 
 	@Override
