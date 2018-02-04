@@ -29,11 +29,11 @@ public class CarOrm implements ICar {
 		if (em.find(Model.class, car.getModel()) == null) {
 			em.persist(car.getModel());
 		}
-
-		// XXX
-		if (em.find(Owner.class, car.getOwners()) == null) {
-
-			em.persist(Collections.emptyList());
+		List<Owner> owners = car.getOwners();
+		for (Owner owner : owners) {
+			if (em.find(Owner.class, owner.getId()) == null) {
+				owners.add(owner);
+			}
 		}
 
 		em.persist(car);
