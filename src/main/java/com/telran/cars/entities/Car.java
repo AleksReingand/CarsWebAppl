@@ -20,6 +20,7 @@ public class Car implements Serializable {
 	String name;
 	String color;
 	LocalDate yearRelease;
+	@Enumerated(EnumType.STRING)
 	State state;
 	@ManyToMany
 	List<Owner> owners;
